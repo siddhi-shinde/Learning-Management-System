@@ -1,131 +1,139 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import axiosInstance from "../../api/axiosInstance";
+import { toast } from "react-toastify";
+
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const { login } = useAuth();
 
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
     try {
-      setLoading(true);
-      setError("");
+      const response = await login(data);
 
-      const response = await axiosInstance.post(
-        "/auth/login",
-        formData
-      );
+      if (response.data.success) {
+        toast.success("Login successful");
 
-      const user = response.data.user;
+        const role = response.data.user.role;
 
-      if (user.role === "admin") {
-        navigate("/admin/dashboard");
-      } else if (user.role === "instructor") {
-        navigate("/instructor/dashboard");
-      } else {
-        navigate("/student/dashboard");
+        if (role === "admin") {
+          navigate("/admin/dashboard");
+        } else if (role === "instructor") {
+          navigate("/instructor/dashboard");
+        } else {
+          navigate("/student/dashboard");
+        }
       }
     } catch (error) {
-      setError(
+      toast.error(
         error.response?.data?.message ||
           "Login failed"
       );
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
-    <div className="min-vh-100 bg-light d-flex align-items-center">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-5">
-            <div className="card shadow border-0">
-              <div className="card-body p-4">
-                <h2 className="text-center fw-bold mb-4">
-                  Login
-                </h2>
+    <div className="container">
+      <div className="row justify-content-center mt-5">
 
-                {error && (
-                  <div className="alert alert-danger">
-                    {error}
-                  </div>
-                )}
+        <div className="col-md-5">
 
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-3">
-                    <label className="form-label">
-                      Email
-                    </label>
+          <div className="card shadow">
 
-                    <input
-                      type="email"
-                      name="email"
-                      className="form-control"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="Enter email"
-                      required
-                    />
-                  </div>
+            <div className="card-body p-4">
 
-                  <div className="mb-3">
-                    <label className="form-label">
-                      Password
-                    </label>
+              <h2 className="text-center mb-4">
+                Login
+              </h2>
 
-                    <input
-                      type="password"
-                      name="password"
-                      className="form-control"
-                      value={formData.password}
-                      onChange={handleChange}
-                      placeholder="Enter password"
-                      required
-                    />
-                  </div>
+              <form onSubmit={handleSubmit(onSubmit)}>
 
-                  <div className="text-end mb-3">
-                    <Link to="/forgot-password">
-                      Forgot Password?
-                    </Link>
-                  </div>
+                {/* EMAIL */}
 
-                  <button
-                    type="submit"
-                    className="btn btn-primary w-100"
-                    disabled={loading}
-                  >
-                    {loading ? "Logging in..." : "Login"}
-                  </button>
-                </form>
+                <div className="mb-3">
+                  <label className="form-label">
+                    Email
+                  </label>
 
-                <p className="text-center mt-4 mb-0">
-                  Don't have an account?{" "}
-                  <Link to="/register">
-                    Register
+                  <input
+                    type="email"
+                    className="form-control"
+                    placeholder="Enter email"
+                    {...register("email", {
+                      required:
+                        "Email is required",
+                    })}
+                  />
+
+                  {errors.email && (
+                    <small className="text-danger">
+                      {errors.email.message}
+                    </small>
+                  )}
+                </div>
+
+                {/* PASSWORD */}
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    Password
+                  </label>
+
+                  <input
+                    type="password"
+                    className="form-control"
+                    placeholder="Enter password"
+                    {...register("password", {
+                      required:
+                        "Password is required",
+                    })}
+                  />
+
+                  {errors.password && (
+                    <small className="text-danger">
+                      {errors.password.message}
+                    </small>
+                  )}
+                </div>
+
+                {/* FORGOT PASSWORD */}
+
+                <div className="text-end mb-3">
+                  <Link to="/forgot-password">
+                    Forgot Password?
                   </Link>
-                </p>
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn btn-primary w-100"
+                >
+                  Login
+                </button>
+
+              </form>
+
+              <div className="text-center mt-3">
+                Don't have an account?{" "}
+                <Link to="/register">
+                  Register
+                </Link>
               </div>
+
             </div>
+
           </div>
+
         </div>
+
       </div>
     </div>
   );

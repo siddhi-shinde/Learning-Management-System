@@ -1,8 +1,4 @@
-import {
-  Navigate,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -17,130 +13,88 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import InstructorDashboard from "./pages/instructor/InstructorDashboard";
 import StudentDashboard from "./pages/student/StudentDashboard";
 
+import Courses from "./pages/student/Courses";
+import MyCourses from "./pages/student/MyCourses";
+import CourseDetails from "./pages/student/CourseDetails";
+import Assignments from "./pages/student/Assignments";
+import Quizzes from "./pages/student/Quizzes";
+import Progress from "./pages/student/Progress";
+import Profile from "./pages/student/Profile";
+import Learning from "./pages/student/Learning";
+
 const App = () => {
   return (
     <>
       <Navbar />
 
       <Routes>
-
         {/* ========================= */}
         {/* PUBLIC ROUTES */}
         {/* ========================= */}
 
-        <Route
-          path="/"
-          element={
-            <Navigate
-              to="/login"
-              replace
-            />
-          }
-        />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+        <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/register"
-          element={<Register />}
-        />
+        <Route path="/register" element={<Register />} />
 
-        <Route
-          path="/forgot-password"
-          element={<ForgotPassword />}
-        />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        <Route
-          path="/reset-password/:token"
-          element={<ResetPassword />}
-        />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         {/* ========================= */}
         {/* PROTECTED ROUTES */}
         {/* ========================= */}
 
         <Route element={<ProtectedRoute />}>
-
           {/* ========================= */}
           {/* ADMIN */}
           {/* ========================= */}
 
-          <Route
-            element={
-              <RoleRoute
-                allowedRoles={["admin"]}
-              />
-            }
-          >
-
-            <Route
-              path="/admin/dashboard"
-              element={<AdminDashboard />}
-            />
-
+          <Route element={<RoleRoute allowedRoles={["admin"]} />}>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
           </Route>
 
           {/* ========================= */}
           {/* INSTRUCTOR */}
           {/* ========================= */}
 
-          <Route
-            element={
-              <RoleRoute
-                allowedRoles={["instructor"]}
-              />
-            }
-          >
-
+          <Route element={<RoleRoute allowedRoles={["instructor"]} />}>
             <Route
               path="/instructor/dashboard"
-              element={
-                <InstructorDashboard />
-              }
+              element={<InstructorDashboard />}
             />
-
           </Route>
-
           {/* ========================= */}
           {/* STUDENT */}
           {/* ========================= */}
 
-          <Route
-            element={
-              <RoleRoute
-                allowedRoles={["student"]}
-              />
-            }
-          >
+          <Route element={<RoleRoute allowedRoles={["student"]} />}>
+            <Route path="/student/dashboard" element={<StudentDashboard />} />
 
-            <Route
-              path="/student/dashboard"
-              element={
-                <StudentDashboard />
-              }
-            />
+            <Route path="/student/courses" element={<Courses />} />
 
+            <Route path="/student/my-courses" element={<MyCourses />} />
+
+            <Route path="/student/course/:id" element={<CourseDetails />} />
+
+            <Route path="/student/assignments" element={<Assignments />} />
+
+            <Route path="/student/quizzes" element={<Quizzes />} />
+
+            <Route path="/student/progress" element={<Progress />} />
+
+            <Route path="/student/profile" element={<Profile />} />
+
+            <Route path="/student/learning/:courseId"element={<Learning />} />
           </Route>
-
         </Route>
 
         {/* ========================= */}
         {/* FALLBACK */}
         {/* ========================= */}
 
-        <Route
-          path="*"
-          element={
-            <Navigate
-              to="/login"
-              replace
-            />
-          }
-        />
-
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </>
   );

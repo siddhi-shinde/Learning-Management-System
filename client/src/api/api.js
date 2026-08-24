@@ -82,3 +82,100 @@ export const updateLecture = (id, data) =>
 
 export const deleteLecture = (id) =>
   axiosInstance.delete(`/lectures/${id}`);
+
+
+// ==============================
+// ENROLLMENT APIs
+// ==============================
+
+export const enrollInCourse = (courseId) =>
+  axiosInstance.post("/enrollments", {
+    courseId,
+  });
+
+export const getMyEnrollments = () =>
+  axiosInstance.get("/enrollments/student");
+
+export const updateCourseProgress = (
+  enrollmentId,
+  lectureId
+) =>
+  axiosInstance.put(
+    "/enrollments/progress",
+    {
+      enrollmentId,
+      lectureId,
+    }
+  );
+
+// ==============================
+// ASSIGNMENT APIs
+// ==============================
+
+
+export const getCourseAssignments = (courseId) =>
+  axiosInstance.get(
+    `/assignments/course/${courseId}`
+  );
+
+export const getAssignmentById = (id) =>
+  axiosInstance.get(
+    `/assignments/${id}`
+  );
+
+export const createAssignment = (data) =>
+  axiosInstance.post(
+    "/assignments",
+    data
+  );
+
+export const updateAssignment = (
+  id,
+  data
+) =>
+  axiosInstance.put(
+    `/assignments/${id}`,
+    data
+  );
+
+export const deleteAssignment = (id) =>
+  axiosInstance.delete(
+    `/assignments/${id}`
+  );
+
+export const submitAssignment = (
+  formData
+) =>
+  axiosInstance.post(
+    "/assignments/submit",
+    formData,
+    {
+      headers: {
+        "Content-Type":
+          "multipart/form-data",
+      },
+    }
+  );
+
+export const getMySubmission = (
+  assignmentId
+) =>
+  axiosInstance.get(
+    `/assignments/submission/${assignmentId}`
+  );
+
+export const getAssignmentSubmissions = (
+  assignmentId
+) =>
+  axiosInstance.get(
+    `/assignments/submissions/${assignmentId}`
+  );
+
+export const evaluateSubmission = (
+  submissionId,
+  data
+) =>
+  axiosInstance.put(
+    `/assignments/submission/${submissionId}/evaluate`,
+    data
+  );

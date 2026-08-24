@@ -86,11 +86,13 @@ const createCourse = async (req, res) => {
 };
 
 // ==========================================
-// GET ALL COURSES
+// GET ALL PUBLISHED COURSES
 // ==========================================
 const getAllCourses = async (req, res) => {
   try {
-    const courses = await Course.find()
+    const courses = await Course.find({
+      published: true,
+    })
       .populate("instructorId", "name email")
       .populate("category", "name")
       .sort({ createdAt: -1 });

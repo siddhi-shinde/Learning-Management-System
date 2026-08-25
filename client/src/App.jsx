@@ -17,10 +17,18 @@ import Courses from "./pages/student/Courses";
 import MyCourses from "./pages/student/MyCourses";
 import CourseDetails from "./pages/student/CourseDetails";
 import Assignments from "./pages/student/Assignments";
+import AssignmentDetails from "./pages/student/AssignmentDetails";
 import Quizzes from "./pages/student/Quizzes";
 import Progress from "./pages/student/Progress";
 import Profile from "./pages/student/Profile";
 import Learning from "./pages/student/Learning";
+import CourseQuizzes from "./pages/student/CourseQuizzes";
+import QuizAttempt from "./pages/student/QuizAttempt";
+import QuizResult from "./pages/student/QuizResult";
+import QuizHistory from "./pages/student/QuizHistory";
+
+import CourseAssignments from "./pages/student/CourseAssignments";
+import AssignmentSubmission from "./pages/student/AssignmentSubmission";
 
 const App = () => {
   return (
@@ -77,8 +85,10 @@ const App = () => {
             <Route path="/student/my-courses" element={<MyCourses />} />
 
             <Route path="/student/course/:id" element={<CourseDetails />} />
-
+           
             <Route path="/student/assignments" element={<Assignments />} />
+
+            <Route path="/student/assignments/:assignmentId" element={<AssignmentDetails />}/>
 
             <Route path="/student/quizzes" element={<Quizzes />} />
 
@@ -86,7 +96,20 @@ const App = () => {
 
             <Route path="/student/profile" element={<Profile />} />
 
-            <Route path="/student/learning/:courseId"element={<Learning />} />
+            <Route path="/student/learning/:courseId" element={<Learning />} />
+
+            <Route path="/student/course/:courseId/quizzes" element={<CourseQuizzes />} />
+
+            <Route path="/student/quiz/:quizId" element={<QuizAttempt />} />
+
+            <Route path="/student/quiz/result/:quizId" element={<QuizResult />}/>
+
+            <Route path="/student/quiz-history" element={<QuizHistory />}/>
+
+            <Route path="/student/course/:courseId/assignments" element={<CourseAssignments />} />
+
+            <Route path="/student/assignment/:assignmentId" element={<AssignmentSubmission />} />
+
           </Route>
         </Route>
 

@@ -13,9 +13,17 @@ const {
 } = require("../controllers/assignmentController");
 
 const protect = require("../middleware/authMiddleware");
+
 const authorizeRoles = require("../middleware/roleMiddleware");
 
+// ==============================
+// MULTER UPLOAD MIDDLEWARE
+// ==============================
+
+const upload = require("../middleware/uploadMiddleware");
+
 const router = express.Router();
+
 // ==========================================
 // COURSE ASSIGNMENTS
 // ==========================================
@@ -93,6 +101,7 @@ router.post(
   "/submit",
   protect,
   authorizeRoles("student"),
+  upload.single("file"),
   submitAssignment
 );
 
@@ -137,6 +146,5 @@ router.put(
   ),
   evaluateSubmission
 );
-
 
 module.exports = router;

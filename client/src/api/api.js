@@ -179,3 +179,40 @@ export const evaluateSubmission = (
     `/assignments/submission/${submissionId}/evaluate`,
     data
   );
+
+  // ==============================
+// QUIZ APIs
+// ==============================
+
+// Get quizzes for a course
+export const getCourseQuizzes = (courseId) =>
+  axiosInstance.get(`/quizzes/course/${courseId}`);
+
+// Get single quiz
+export const getQuizById = (id) =>
+  axiosInstance.get(`/quizzes/${id}`);
+
+// Create quiz
+export const createQuiz = (data) =>
+  axiosInstance.post("/quizzes", data);
+
+// Update quiz
+export const updateQuiz = (id, data) =>
+  axiosInstance.put(`/quizzes/${id}`, data);
+
+// Delete quiz
+export const deleteQuiz = (id) =>
+  axiosInstance.delete(`/quizzes/${id}`);
+
+// Submit quiz
+export const submitQuiz = (data) =>
+  axiosInstance.post("/quizzes/submit", data);
+
+// Get result of a quiz
+export const getQuizResult = (quizId) =>
+  axiosInstance.get(`/quizzes/result/${quizId}`);
+
+// Get student's quiz history
+export const getMyQuizResults = () =>
+  axiosInstance.get("/quizzes/my-results");
+
